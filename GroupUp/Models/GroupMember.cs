@@ -6,4 +6,5 @@ namespace GroupUp.Models
     public int GroupId { get; set; }
     public string AccountId { get; set; }
   }
+
 }

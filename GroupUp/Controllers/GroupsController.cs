@@ -15,9 +15,12 @@ namespace GroupUp.Controllers
   {
     private readonly GroupsService _gs;
 
-    public GroupsController(GroupsService gs)
+    private readonly GroupMembersService _gms;
+
+    public GroupsController(GroupsService gs, GroupMembersService gms)
     {
       _gs = gs;
+      _gms = gms;
     }
 
     [HttpGet]
@@ -46,6 +49,21 @@ namespace GroupUp.Controllers
       {
         return BadRequest(e.Message);
       }
+    }
+
+    [HttpGet("{groupId}/members")]
+    public ActionResult<List<ProfileGroupViewModel>> GetMembers(int groupId)
+    {
+      try
+      {
+        List<ProfileGroupViewModel> members = _gms.GetMembers(groupId);
+        return Ok(members);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+
     }
 
     [HttpPost]

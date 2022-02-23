@@ -85,5 +85,25 @@ namespace GroupUp.Repositories
 
       _db.Execute(sql, new { id });
     }
+
+    internal List<GroupProfileViewModel> GetGroupsByAccountId(string accountId)
+    {
+      string sql = @"
+      SELECT
+        g.*,
+        gm.id AS GroupMemberId,
+        a.*
+      FROM groupmembers gm
+      JOIN groups g ON gm.groupId = g.id
+      JOIN accounts a ON g.creatorId = a.id
+      WHERE gm.accountId = @accountId
+      ";
+
+      return _db.Query<GroupProfileViewModel, Profile, GroupProfileViewModel>(sql, (gpvm, p) =>
+      {
+        gpvm.Creator = p;
+        return gpvm;
+      }, new { accountId }).ToList();
+    }
   }
 }

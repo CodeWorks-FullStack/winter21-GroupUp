@@ -14,4 +14,9 @@ namespace GroupUp.Models
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
   }
+  // used by get all groups for account
+  public class GroupProfileViewModel : Group
+  {
+    public int GroupMemberId { get; set; }
+  }
 }

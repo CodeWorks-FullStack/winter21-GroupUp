@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GroupUp.Models;
 using GroupUp.Repositories;
 
@@ -8,11 +9,13 @@ namespace GroupUp.Services
   {
     private readonly GroupMembersRepository _repo;
     private readonly GroupsRepository _groupsRepo;
+    private readonly AccountsRepository _accountsRepo;
 
-    public GroupMembersService(GroupMembersRepository repo, GroupsRepository groupsRepo)
+    public GroupMembersService(GroupMembersRepository repo, GroupsRepository groupsRepo, AccountsRepository accountsRepo)
     {
       _repo = repo;
       _groupsRepo = groupsRepo;
+      _accountsRepo = accountsRepo;
     }
 
     internal GroupMember Create(GroupMember groupMember)
@@ -33,6 +36,16 @@ namespace GroupUp.Services
         throw new Exception("You are not authorized to delete this group member.");
       }
       _repo.Delete(id);
+    }
+
+    internal List<ProfileGroupViewModel> GetMembers(int groupId)
+    {
+      return _accountsRepo.GetByGroupId(groupId);
+    }
+
+    internal List<GroupProfileViewModel> GetByAccountId(string id)
+    {
+      return _groupsRepo.GetGroupsByAccountId(id);
     }
   }
 }
